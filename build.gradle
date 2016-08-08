@@ -1,0 +1,67 @@
+/**
+ * 20160714 SAM package war and jar as ear and deploy to server.
+ **/
+
+apply plugin: 'ear'
+
+String BUILD_DIR = "D:/LEE/DEV/jobs/build/libs"
+String WILDFLY_DEPLOY = "D:/LEE/WILDFLY10JBCS/standalone/deployments/"
+String explodedDirLocation = "D:/LEE/DEV/jobs/build/libs/exploded"
+/**
+ * set up repo, maven central
+ **/ 
+repositories {
+    mavenCentral()
+}
+
+/**
+ * set module dependencies
+ **/  
+dependencies {
+    deploy project(path:':jobspot.war', configuration: 'archives')
+	deploy project(':common.jar')
+    deploy project(':jobspot.jar')
+
+}
+
+
+ear{
+    
+    // package ear with custom meta data files
+    into('/META-INF'){
+        from('jobspot.ear/src/META-INF/application.xml')
+        from('jobspot.ear/src/META-INF/jboss-app.xml')
+        from('jobspot.ear/src/META-INF/jboss-deployment-structure.xml')
+    }
+    
+    
+}
+
+/**
+ * extract ear into folder
+ **/
+task explodeEAR(type: Copy){
+    into explodedDirLocation
+    with ear
+}
+
+/**
+ * deploy to server
+ **/
+task deploy(type: Copy, dependsOn: explodeEAR){
+    
+    //create ear in server
+    def logDirBase = new File(WILDFLY_DEPLOY+'/jobspot.ear')
+    logDirBase.mkdirs()
+    
+    //create deployment marker
+    new File(WILDFLY_DEPLOY+'/jobspot.ear.dodeploy').write('jobspot.ear.dodeploy')
+    
+    //copy over the exploded ear content into the server
+    from BUILD_DIR+'/exploded'
+    into WILDFLY_DEPLOY+'/jobspot.ear'
+    
+}
+
+
+build.finalizedBy(deploy)

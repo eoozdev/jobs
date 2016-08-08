@@ -1,0 +1,14 @@
+
+-- to disable the welcome root, remove location handler and add jboss-web xml
+
+	<location name="/" handler="welcome-content"/>
+
+	<handlers>
+		<file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>
+	</handlers>
+
+-- set up alias jobspot.dev
+	<host name="default-host" alias="jobspot.dev">
+--make sure u add your alias into the web app jboss-web xml 
+	<virtual-host>jobspot.dev</virtual-host>
+--and the windows hosts file

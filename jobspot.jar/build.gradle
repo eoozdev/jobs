@@ -1,0 +1,31 @@
+/**
+ * 20160712 SAM gradle build for jobspot.jar
+ **/
+apply plugin: "java"
+
+
+sourceSets{
+    main.java.srcDir "/src"
+}
+
+repositories{
+    mavenCentral()
+}
+
+dependencies{
+
+	compile project(':common.jar')
+	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    compile 'org.apache.shiro:shiro-core:1.2.6'
+    compile 'org.apache.shiro:shiro-web:1.2.6'
+    compile group: "javax", name: "javaee-api", version: "7.0"
+	compile group: 'com.google.code.gson', name: 'gson', version: '2.6.2'
+	compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2.2'
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
+}
+
+jar{
+    archiveName "jobspot.jar"
+    version "1.0"
+}
+
