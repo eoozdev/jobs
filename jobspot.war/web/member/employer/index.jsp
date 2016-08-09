@@ -18,6 +18,7 @@
 <a href = "<c:url value="/logout"/>"> log out man.</a>
 </shiro:authenticated>
 
- members area... - create vacancy: <a href = "/do.vacancy?cc=<%=Command.PUBLISH_VACANCY_VIEW.code()%>"> publish a vacancy.</a>
+ members area... - create vacancy: <a href = "/do.vacancy?cc=<%=Command.PUBLISH_VACANCY_VIEW.code()%>"> publish a vacancy.</a> 
+ || <a href = "/do.vacancy?cc=<%=Command.EMPLOYER_VACANCY_PG.code()%>"> show me my vacancies.</a>
 </body>
 </html>

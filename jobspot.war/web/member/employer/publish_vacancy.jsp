@@ -1,3 +1,4 @@
+<%@page import="com.jobspot.employer.form.FIELD_NAME"%>
 <%@page import="com.jobspot.common.Command"%>
 
 <html>
@@ -10,7 +11,8 @@
 <form action="/do.vacancy?cc=<%=Command.PUBLISH_VACANCY.code()%>" method="POST" enctype='multipart/form-data'>
 
 
-
+<p>TO SAM: add a date picker to select display duration. submit 'startDate' and 'endDate' with the request</p>
+<p>ARTWORK url must be passed in with the request.</p>
 
 <div>
 Publish vacancy under field
@@ -22,7 +24,7 @@ Publish vacancy under field
 
 <div>
 What the job position you are offering
-<input type = "text" name = "title" />
+<input type = "text" name = "<%=FIELD_NAME.TITLE.value()%>" />
 </div>
 
 <div>
@@ -35,18 +37,21 @@ where is this job located
 
 <div>
 What is the basic salary you offer
-<input type = "text" name = "basicSalary" />
+<input type = "text" name = "<%=FIELD_NAME.BASIC.value()%>" />
 </div>
 
 <div>
 For how long do you want to display the vacancy? 2 weeks cost RS 2800
-<input type = "text" name = "displayDuration" />
+<input type = "text" name = "<%=FIELD_NAME.START_DATE.value()%>" />
 </div>
-
+<div>
+For how long do you want to display the vacancy? 2 weeks cost RS 2800
+<input type = "text" name = "<%=FIELD_NAME.END_DATE.value()%>" />
+</div>
 
 <div>
 Upload an artwork
-<input type = "file" name = "artwork"/>
+<input type = "file" name = "<%=FIELD_NAME.ARTWORK.value()%>"/>
 </div>
 
 <div>

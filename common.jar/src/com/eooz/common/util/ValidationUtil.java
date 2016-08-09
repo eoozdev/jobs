@@ -18,4 +18,13 @@ public class ValidationUtil {
 		return true;
 	}
 
+	public static boolean isNumeric(String basic) {
+		return true;
+	}
+
+	public static boolean isDate(String startdate) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }

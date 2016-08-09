@@ -12,7 +12,9 @@ public enum Command {
 	PUBLISH_VACANCY_VIEW("EZPVV", CommandType.GET),
 	PUBLISH_VACANCY("EZPV", CommandType.POST),
 	UPDATE_VACANCY("EZUV", CommandType.PUT),
-	REGISTER_USER("EZRU", CommandType.POST);
+	REGISTER_USER("EZRU", CommandType.POST), 
+	UPDATE_VACANCY_VIEW("EZUVV", CommandType.GET), 
+	EMPLOYER_VACANCY_PG("EZEVP", CommandType.GET);
 	
 	
 	private String value;

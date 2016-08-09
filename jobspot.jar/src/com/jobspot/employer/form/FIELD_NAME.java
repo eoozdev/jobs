@@ -5,10 +5,13 @@ public enum FIELD_NAME {
 	
 	BASIC("basic"),
 	EMPLOYER("employer"),
-	DURATION("duration"),
+	DISPLAY_DURATION("duration"),
 	JOB_CATEGORY("jobCategory"),
 	ARTWORK("artwork"),
-	TOWN("town");
+	TOWN("town"), 
+	TITLE("title"),
+	START_DATE("startDate"),
+	END_DATE("endDate");
 	
 	private String value;
 	

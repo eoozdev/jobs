@@ -52,10 +52,25 @@ public abstract class SecurityUtil {
 			token.setRememberMe(true);
 			subject.login(token);
 		}
-		
-	
-	
+			
+	}
 
+	public static String getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getUsername() {
+		return (String) getSubject().getPrincipal();
+	}
+
+	public static void addToSession(String key, String value) {
 		
+		getSubject().getSession().setAttribute(key, value);
+	}
+
+	public static String getFromSession(String key) {
+		// TODO Auto-generated method stub
+		return (String) getSubject().getSession().getAttribute(key);
 	}
 }
