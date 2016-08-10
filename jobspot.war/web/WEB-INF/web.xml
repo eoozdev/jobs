@@ -5,36 +5,30 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
-  
   <servlet>
-  	<servlet-name>login</servlet-name>
-  	<jsp-file>/lingo.jsp</jsp-file>
+    <servlet-name>login</servlet-name>
+    <jsp-file>/lingo.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>login</servlet-name>
-  	<web:url-pattern>do.login</web:url-pattern>
+    <servlet-name>login</servlet-name>
+    <url-pattern>do.login</url-pattern>
   </servlet-mapping>
- 
   <servlet>
-  	<servlet-name>signup</servlet-name>
-  	<jsp-file>/signup.jsp</jsp-file>
+    <servlet-name>signup</servlet-name>
+    <jsp-file>/signup.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>signup</servlet-name>
-  	<web:url-pattern>do.signup</web:url-pattern>
+    <servlet-name>signup</servlet-name>
+    <url-pattern>do.signup</url-pattern>
   </servlet-mapping>
-   
   <error-page>
     <error-code>404</error-code>
     <location>/error.jsp</location>
   </error-page>
-  
-    <error-page>
+  <error-page>
     <error-code>401</error-code>
     <location>/error.jsp</location>
   </error-page>
-  
-  
   <listener>
     <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
   </listener>

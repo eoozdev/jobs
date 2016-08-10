@@ -2,7 +2,7 @@ package com.jobspot.master;
 
 public class Vacancy {
 	
-	
+	private String code;
 	private String basic;
 	private String title;
 	private String artwork;
@@ -78,5 +78,15 @@ public class Vacancy {
 	
 	public String getEmployer(){
 		return this.employer;
+	}
+
+
+	public String getCode() {
+		return this.code;
+	}
+
+
+	public void setCode(String string) {
+		this.code = string;
 	}
 }

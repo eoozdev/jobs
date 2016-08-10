@@ -11,8 +11,8 @@ public interface IPage {
 	public Form getForm();
 	public void setForm(Form f);
 
-	public String getError();
-	public void setError(String err);
+	public String getMessage();
+	public void setMessage(String err);
 	
 	public String getHref();
 	public void setHref(String url);

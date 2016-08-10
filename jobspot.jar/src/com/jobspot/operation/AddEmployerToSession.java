@@ -8,10 +8,11 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.eooz.common.util.AddToSession;
 import com.eooz.common.util.SQLConnection;
 import com.eooz.security.SecurityUtil;
 
-public class AddEmployerToSession {
+public class AddEmployerToSession implements AddToSession{
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	

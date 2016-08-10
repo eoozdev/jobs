@@ -21,7 +21,7 @@ public class GetVacancy {
 		ResultSet rs = null;
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "SELECT VT.TOWN, VJC.JOBCATEGORY, V.TITLE, V.ARTWORK, V.BASIC, V.STARTDATE, V.ENDDATE FROM VACANCY V "
+		String sql = "SELECT VT.TOWN, VJC.JOBCATEGORY, V.TITLE, V.ARTWORK, V.BASIC, V.STARTDATE, V.ENDDATE, V.CODE FROM VACANCY V "
 				+ " INNER JOIN VACANCY_JOBCATEGORY VJC ON VJC.VACANCY = V.CODE "
 				+ " INNER JOIN VACANCY_TOWN VT ON VT.VACANCY = V.CODE WHERE V.CODE = ?";
 		
@@ -44,6 +44,7 @@ public class GetVacancy {
 				v.setBasic(rs.getString(5));
 				v.setDisplayfrom(rs.getString(6));
 				v.setDisplayto(rs.getString(7));
+				v.setCode(rs.getString(8));
 				
 			}
 			

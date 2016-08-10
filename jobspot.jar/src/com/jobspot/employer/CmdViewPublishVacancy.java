@@ -47,7 +47,7 @@ public class CmdViewPublishVacancy extends AbstractCommand implements GetCommand
 						
 			if(SecurityUtil.isNotAuthenticated()){
 				page.setHrefToLogin();
-				page.setError(SYSTEM_MESAGE.NOT_LOGGED_IN.value());
+				page.setMessage(SYSTEM_MESAGE.NOT_LOGGED_IN.value());
 			}
 			
 			else{

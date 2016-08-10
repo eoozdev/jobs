@@ -2,7 +2,7 @@ package com.jobspot.employer.form;
 
 public enum FIELD_NAME {
 
-	
+	VACANCY("vacancy"),
 	BASIC("basic"),
 	EMPLOYER("employer"),
 	DISPLAY_DURATION("duration"),

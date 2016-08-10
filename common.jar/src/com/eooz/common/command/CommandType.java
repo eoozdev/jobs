@@ -6,7 +6,8 @@ public enum CommandType {
 	GET("GET"),
 	POST("POST"),
 	PUT("PUT"),
-	DELETE("DELETE");
+	DELETE("DELETE"), 
+	UPLOAD("UPLOAD");
 	
 	private String operation;
 	

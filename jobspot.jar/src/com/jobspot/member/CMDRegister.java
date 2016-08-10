@@ -60,12 +60,12 @@ public class CMDRegister extends AbstractCommand implements PostCommand{
 		
 		catch(SQLException sqle){
 			logger.error("--> execute()"+sqle);
-			page.setError(sqle.toString());
+			page.setMessage(sqle.toString());
 		}
 		
 		catch(Exception e){
 			logger.error("--> execute()"+e);
-			page.setError(e.toString());
+			page.setMessage(e.toString());
 		}
 		
 

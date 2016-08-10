@@ -2,7 +2,6 @@ package com.jobspot.employer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
@@ -29,33 +28,23 @@ import com.jobspot.master.Vacancy;
 import com.jobspot.operation.AddEmployerToSession;
 import com.jobspot.operation.MyVacancy;
 
-public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
+public class CmdUpdateVacancy extends AbstractCommand implements PostCommand{
 
-	
 	private RequestWrap request;
-	private ResponseWrap response;
-	private Logger logger = LoggerFactory.getLogger(CmdPublishVacancy.class);
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	
-
-
-	//default constructor
-	public CmdPublishVacancy(){}
-
-	
-
-
-	public CmdPublishVacancy(RequestWrap request, ResponseWrap response) {
+	public CmdUpdateVacancy(RequestWrap request) {
 		this.request = request;
-		this.response = response;
 	}
 
+	public CmdUpdateVacancy() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
-	//the core of the logic takes place in this magical method
 	public String doWork() {
-		
 		IPage page = new Page();
+		MyVacancy myVacancy = new MyVacancy();
 		
 		try{
 						
@@ -64,35 +53,41 @@ public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
 				page.setMessage(SYSTEM_MESAGE.NOT_LOGGED_IN.value());
 			}
 			
-			String employer = super.getFromSession("EMPLOYER_CODE", new AddEmployerToSession());
-			
-			if(employer == null){
-				new AddEmployerToSession().add();
-				employer = SecurityUtil.getFromSession("EMPLOYER_CODE");
-			}
-			
+
 			else{
 	
 				
 				Map<String, String> params = request.getParameterMap();
 				PublishVacancyForm form = new PublishVacancyForm(params, new Vacancy());
-				form.employer(employer);
-				form.validate();
 				
-				if(form.validated()){
+				String employer = super.getFromSession("EMPLOYER_CODE", new AddEmployerToSession());
+				
+				if(myVacancy.no(employer, form.vacancyCode()))
+					page.setMessage(SYSTEM_MESAGE.NOT_AUTHORIZED.value());
+				
+
+				else{
 					
-					createVacancy(form.title(), 
-							form.jobcategory(), 
-							form.town(), 
-							form.basic(),  
-							form.artwork(), 
-							form.startdate(), 
-							form.enddate(), 
-							form.employer());
+					form.employer(employer);
+					form.validate();
 					
+					if(form.validated()){
+						
+						
+						
+						updateVacancy(form.title(), 
+								form.jobcategory(), 
+								form.town(), 
+								form.basic(),  
+								form.artwork(), 
+								form.startdate(), 
+								form.enddate(), 
+								form.employer(), form.vacancyCode());
+						
+						
+					}
 					
 				}
-				
 
 				page.setForm(form);
 				
@@ -102,17 +97,16 @@ public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
 		
 		catch(Exception e){
 			logger.error("doWork(): general exception"+e);
+			page.setMessage(SYSTEM_MESAGE.UNEXPECTED_ERROR.value());
+			e.printStackTrace();
 		}	
 		
 		
 		return toJson(page);
 	}
 
-
-
-
-
-	private void createVacancy(String title, String jobcategory, String town, String basic, String artwork, String startdate, String enddate, String employer) {
+	private void updateVacancy(String title, String jobcategory, String town, String basic, String artwork,
+			String startdate, String enddate, String employer, String code) {
 
 		UserTransaction trx = null;
 		boolean trxComplete = false;
@@ -122,9 +116,9 @@ public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
 			trx = (UserTransaction)new InitialContext().lookup("java:comp/UserTransaction");
 			trx.begin();
 			
-			int id = insertVacancy(title, employer, basic, startdate, enddate, artwork);
-			mapWithTown(id, town);
-			mapWithJobCategory(id, jobcategory);
+			updateVacancy(title, employer, basic, startdate, enddate, artwork, code);
+			mapWithTown(code, town);
+			mapWithJobCategory(code, jobcategory);
 			
 			trx.commit();
 			trxComplete = true;
@@ -142,79 +136,40 @@ public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
 			}
 			
 		}
-			
-		
 	}
 
 
-	private int insertVacancy(String title, String employer, String basic, String startdate, String enddate, String artwork) {
-	
-		int code = -1;
-		ResultSet rs = null;
+
+	private void updateVacancy(String title, String employer, String basic, String startdate, String enddate, String artwork, String code) {
+		
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "INSERT INTO VACANCY (TITLE, EMPLOYER, BASIC, STARTDATE, ENDDATE, ARTWORK) VALUES(?,?,?,?,?,?)";
+		String sql = "UPDATE VACANCY SET TITLE = ?, EMPLOYER = ?,  BASIC = ?,  STARTDATE = ?,  ENDDATE = ?,  ARTWORK = ? WHERE CODE = ?";
 		
+		if(artwork == null)
+			sql = "UPDATE VACANCY SET TITLE = ?,  EMPLOYER = ?,  BASIC = ?,  STARTDATE = ?,  ENDDATE = ?  WHERE CODE = ?";
+
 		try{
 			
 			con = SQLConnection.getConnection();
-			ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+			ps = con.prepareStatement(sql);
 			
 			ps.setString(1, title);
 			ps.setString(2, employer);
 			ps.setString(3, basic);
 			ps.setString(4, startdate);
 			ps.setString(5, enddate);
-			ps.setString(6, artwork);
-			ps.executeUpdate();
-			rs = ps.getGeneratedKeys();
+			ps.setString(6, artwork == null?code:artwork);
 			
-			if(rs.next())
-				code = rs.getInt(1);
-		}
-		
-		catch(SQLException e){
-			logger.error("--> insertVacancy(): "+e);
-		}
-		
-		finally{
+			if(artwork!= null)
+				ps.setString(7, code);
 			
-			try{
-				
-				if(rs != null) rs.close();
-				if(ps != null) ps.close();
-				if(con != null) con.close();
-				
-			}
-			
-			catch(SQLException sqle){
-				logger.error(" insertVacancy(): resource clean up: "+sqle);
-			}
-		}
-		
-		return code;
-	}
-
-
-	private void mapWithTown(int id, String town) {
-	
-		Connection con = null;
-		PreparedStatement ps = null;
-		String sql = "INSERT INTO VACANCY_TOWN (VACANCY, TOWN) VALUES(?,?)";
-		
-		try{
-			
-			con = SQLConnection.getConnection();
-			ps = con.prepareStatement(sql);
-			
-			ps.setInt(1, id);
-			ps.setString(2, town);
 			ps.executeUpdate();
 			
 		}
 		
 		catch(SQLException e){
-			logger.error("--> mapWithTown(): "+e);
+			logger.error("--> updateVacancy(): "+e);
 		}
 		
 		finally{
@@ -227,25 +182,23 @@ public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
 			}
 			
 			catch(SQLException sqle){
-				logger.error(" mapWithTown(): resource clean up: "+sqle);
+				logger.error(" updateVacancy(): resource clean up: "+sqle);
 			}
 		}
 	}
 
-
-	private void mapWithJobCategory(int id, String jobcategory) {
-		
+	private void mapWithJobCategory(String id, String jobcategory) {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "INSERT INTO VACANCY_JOBCATEGORY (VACANCY, JOBCATEGORY) VALUES(?,?)";
+		String sql = "UPDATE VACANCY_JOBCATEGORY SET JOBCATEGORY = ? WHERE VACANCY = ?";
 		
 		try{
 			
 			con = SQLConnection.getConnection();
-			ps = con.prepareStatement(sql);
+			ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			
-			ps.setInt(1, id);
-			ps.setString(2, jobcategory);
+			ps.setString(1, jobcategory);
+			ps.setString(2, id);
 			ps.executeUpdate();
 			
 		}
@@ -264,15 +217,49 @@ public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
 			}
 			
 			catch(SQLException sqle){
-				logger.error(" mapWithJobCategory(): resource clean up: "+sqle);
+				logger.error(" updateVacancy(): resource clean up: "+sqle);
 			}
 		}
 	}
 
+	private void mapWithTown(String id, String town) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "UPDATE VACANCY_TOWN SET TOWN = ? WHERE VACANCY = ?";
+		
+		try{
+			
+			con = SQLConnection.getConnection();
+			ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+			
+			ps.setString(1, town);
+			ps.setString(2, id);
+			ps.executeUpdate();
+			
+		}
+		
+		catch(SQLException e){
+			logger.error("--> mapWithTown(): "+e);
+		}
+		
+		finally{
+			
+			try{
+				
+				if(ps != null) ps.close();
+				if(con != null) con.close();
+				
+			}
+			
+			catch(SQLException sqle){
+				logger.error(" updateVacancy(): resource clean up: "+sqle);
+			}
+		}
+	}
 
 	@Override
 	public ICommand create(RequestWrap request, ResponseWrap response) {
-		return new CmdPublishVacancy(request, response);
+		return new CmdUpdateVacancy(request);
 	}
 
 }

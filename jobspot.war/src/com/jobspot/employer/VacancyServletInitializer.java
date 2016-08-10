@@ -2,6 +2,7 @@ package com.jobspot.employer;
 
 import com.eooz.common.command.GetCommandFactory;
 import com.eooz.common.command.PostCommandFactory;
+import com.eooz.common.command.PutCommandFactory;
 import com.jobspot.common.Command;
 
 public class VacancyServletInitializer {
@@ -38,7 +39,7 @@ public class VacancyServletInitializer {
 		
 
 		
-		
+		PutCommandFactory.register(Command.UPDATE_VACANCY.code(), new CmdUpdateVacancy());
 		
 		
 	}

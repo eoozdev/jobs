@@ -29,16 +29,36 @@ public class PublishVacancyForm implements Form {
 	private Vacancy vacancy;
 
 
-	public PublishVacancyForm(Map<String, String> params) {
+	public PublishVacancyForm(Map<String, String> params, Vacancy v) {
 		
-		vacancy.setArtwork(params.get(FIELD_NAME.ARTWORK.value()));
-		vacancy.setTitle(params.get(FIELD_NAME.TITLE.value()));
+		vacancy = v;
+		
+		if(params.containsKey(FIELD_NAME.ARTWORK.value()))
+			vacancy.setArtwork(params.get(FIELD_NAME.ARTWORK.value()));
+		
+		if(params.containsKey(FIELD_NAME.TITLE.value()))
+			vacancy.setTitle(params.get(FIELD_NAME.TITLE.value()));
+				
+		if(params.containsKey(FIELD_NAME.JOB_CATEGORY.value()))
 		vacancy.setJobcategory(params.get(FIELD_NAME.JOB_CATEGORY.value()));
+		
+		if(params.containsKey(FIELD_NAME.BASIC.value()))
 		vacancy.setBasic(params.get(FIELD_NAME.BASIC.value()));
+		
+		if(params.containsKey(FIELD_NAME.TOWN.value()))
 		vacancy.setTown(params.get(FIELD_NAME.TOWN.value()));
+		
+		if(params.containsKey(FIELD_NAME.START_DATE.value()))
 		vacancy.setDisplayfrom(params.get(FIELD_NAME.START_DATE.value()));
+		
+		if(params.containsKey(FIELD_NAME.END_DATE.value()))
 		vacancy.setDisplayto(params.get(FIELD_NAME.END_DATE.value()));
+		
+		if(params.containsKey(FIELD_NAME.EMPLOYER.value()))
 		vacancy.setEmployer( params.get(FIELD_NAME.EMPLOYER.value()));
+		
+		if(params.containsKey(FIELD_NAME.VACANCY.value()))
+			vacancy.setCode(params.get(FIELD_NAME.VACANCY.value()));
 		
 	}
 
@@ -175,6 +195,10 @@ public class PublishVacancyForm implements Form {
 
 	public void employer(String employer) {
 		vacancy.setEmployer(employer);;
+	}
+
+	public String vacancyCode() {
+		return vacancy.getCode();
 	}
 
 }

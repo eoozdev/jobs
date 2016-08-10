@@ -7,7 +7,7 @@ import com.eooz.common.form.Form;
 
 public class Page implements IPage {
 
-	private String error;
+	private String message;
 	private String href;
 	private Form form;
 	
@@ -25,13 +25,13 @@ public class Page implements IPage {
 	}
 
 	@Override
-	public String getError() {
-		return error;
+	public String getMessage() {
+		return message;
 	}
 
 	@Override
-	public void setError(String err) {
-		this.error = err;
+	public void setMessage(String err) {
+		this.message = err;
 	}
 
 	@Override
