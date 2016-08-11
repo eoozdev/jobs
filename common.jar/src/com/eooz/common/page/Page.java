@@ -7,6 +7,7 @@ import com.eooz.common.form.Form;
 
 public class Page implements IPage {
 
+	private boolean allowDirectAccess = false;
 	private String message;
 	private String href;
 	private Form form;
@@ -69,6 +70,11 @@ public class Page implements IPage {
 	@Override
 	public void setHrefToLogin() {
 		href = "/do.login";
+	}
+
+	@Override
+	public void allowDirectaccess(boolean value) {
+		allowDirectAccess = value;
 	}
 
 

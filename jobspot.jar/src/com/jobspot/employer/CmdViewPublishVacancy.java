@@ -17,13 +17,13 @@ import com.eooz.common.util.RequestWrap;
 import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
-import com.jobspot.operation.GetJobCategories;
-import com.jobspot.operation.GetTowns;
+import com.jobspot.jdbc.operations.GetJobCategories;
+import com.jobspot.jdbc.operations.GetTowns;
 
 public class CmdViewPublishVacancy extends AbstractCommand implements GetCommand{
 
 
-	Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 
 	CmdViewPublishVacancy(){}
@@ -69,7 +69,6 @@ public class CmdViewPublishVacancy extends AbstractCommand implements GetCommand
 		catch(Exception e){
 			logger.error("doWork(): general exception"+e);
 		}	
-		
 		
 		return toJson(page);
 	}

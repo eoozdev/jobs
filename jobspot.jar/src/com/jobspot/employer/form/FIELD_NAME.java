@@ -11,7 +11,12 @@ public enum FIELD_NAME {
 	TOWN("town"), 
 	TITLE("title"),
 	START_DATE("startDate"),
-	END_DATE("endDate");
+	END_DATE("endDate"),
+	
+	EMPLOYER_NAME("employerName"),
+	COMPANY_TYPE("companyType"),
+	COMPANY_SIZE("companySize"),
+	ABOUT("about");
 	
 	private String value;
 	

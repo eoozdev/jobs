@@ -17,11 +17,11 @@ import com.eooz.common.util.RequestWrap;
 import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
+import com.jobspot.dto.Vacancy;
 import com.jobspot.employer.form.PublishVacancyForm;
-import com.jobspot.master.Vacancy;
-import com.jobspot.operation.GetJobCategories;
-import com.jobspot.operation.GetTowns;
-import com.jobspot.operation.GetVacancy;
+import com.jobspot.jdbc.operations.GetJobCategories;
+import com.jobspot.jdbc.operations.GetTowns;
+import com.jobspot.jdbc.operations.GetVacancy;
 
 public class CmdViewUpdateVacancy extends AbstractCommand implements GetCommand {
 
@@ -69,7 +69,6 @@ public class CmdViewUpdateVacancy extends AbstractCommand implements GetCommand 
 		catch(Exception e){
 			logger.error("doWork(): general exception"+e);
 		}	
-		
 		
 		return toJson(page);
 	}

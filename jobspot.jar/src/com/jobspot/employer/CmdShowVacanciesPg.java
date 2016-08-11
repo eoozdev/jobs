@@ -15,7 +15,7 @@ import com.eooz.common.util.RequestWrap;
 import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
-import com.jobspot.operation.GeGetVacancies;
+import com.jobspot.jdbc.operations.GeGetVacancies;
 
 public class CmdShowVacanciesPg extends AbstractCommand implements GetCommand {
 
@@ -47,7 +47,6 @@ public class CmdShowVacanciesPg extends AbstractCommand implements GetCommand {
 		catch(Exception e){
 			logger.error("--> doWork: ERR"+e);
 		}
-		
 		
 		
 		return toJson(page);

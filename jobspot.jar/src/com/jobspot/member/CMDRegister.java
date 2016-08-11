@@ -209,10 +209,10 @@ public class CMDRegister extends AbstractCommand implements PostCommand{
 		String role = form.role();
 		
 		if(role.equalsIgnoreCase(Role.JOBSEEKER.value()))
-			page.setHref(Role.JOBSEEKER.forwardURL());
+			page.setHref(Role.JOBSEEKER.onSignUpUrl());
 		
 		if(role.equalsIgnoreCase(Role.EMPLOYER.value()))
-			page.setHref(Role.EMPLOYER.forwardURL());
+			page.setHref(Role.EMPLOYER.onSignUpUrl());
 	}
 
 

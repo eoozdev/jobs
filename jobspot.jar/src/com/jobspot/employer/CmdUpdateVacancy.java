@@ -23,10 +23,10 @@ import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SQLConnection;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
+import com.jobspot.dto.Vacancy;
 import com.jobspot.employer.form.PublishVacancyForm;
-import com.jobspot.master.Vacancy;
-import com.jobspot.operation.AddEmployerToSession;
-import com.jobspot.operation.MyVacancy;
+import com.jobspot.jdbc.operations.AddEmployerToSession;
+import com.jobspot.jdbc.operations.IsMyVacancy;
 
 public class CmdUpdateVacancy extends AbstractCommand implements PostCommand{
 
@@ -44,7 +44,7 @@ public class CmdUpdateVacancy extends AbstractCommand implements PostCommand{
 	@Override
 	public String doWork() {
 		IPage page = new Page();
-		MyVacancy myVacancy = new MyVacancy();
+		IsMyVacancy myVacancy = new IsMyVacancy();
 		
 		try{
 						

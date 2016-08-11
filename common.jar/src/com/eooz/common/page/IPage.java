@@ -8,6 +8,8 @@ import com.eooz.common.form.Form;
 
 public interface IPage {
 	
+	public void allowDirectaccess(boolean value);
+	
 	public Form getForm();
 	public void setForm(Form f);
 

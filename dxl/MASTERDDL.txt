@@ -1,409 +1,384 @@
--- MySQL dump 10.13  Distrib 5.7.14, for Win64 (x86_64)
---
--- Host: localhost    Database: jobspot
--- ------------------------------------------------------
--- Server version	5.7.14
+-- 20160726 SAM JOBSPOT SCHEMA SCRIPT
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
---
--- Table structure for table `competencies`
---
+-- -----------------------------------------------------
+-- Schema jobspot
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `jobspot` DEFAULT CHARACTER SET utf8 ;
+USE `jobspot` ;
 
-DROP TABLE IF EXISTS `competencies`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `competencies` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `JOBSEEKER` int(11) NOT NULL,
-  `SKILL` varchar(255) NOT NULL DEFAULT '',
-  `LEVEL` varchar(255) NOT NULL DEFAULT '0',
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
+-- -----------------------------------------------------
+-- Table `jobspot`.`SYSTEMUSER`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`SYSTEMUSER` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `PRIMARYEMAIL` VARCHAR(255) NOT NULL DEFAULT '',
+  `USERNAME` VARCHAR(255) NOT NULL DEFAULT '',
+  `PASSWORD` VARCHAR(255) NOT NULL DEFAULT '',
+  `LASTLOGGEDON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`CODE`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `jobspot`.`EMPLOYER`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`EMPLOYER` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `NAME` VARCHAR(45) NOT NULL DEFAULT '',
+  `USER` INT NULL,
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`CODE`),
-  KEY `FK_COMPETENCIES_JOBSEEKER_idx` (`JOBSEEKER`),
-  CONSTRAINT `FK_COMPETENCIES_JOBSEEKER` FOREIGN KEY (`JOBSEEKER`) REFERENCES `jobseeker` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  INDEX `FK_EMPLOYER_USER_idx` (`USER` ASC),
+  CONSTRAINT `FK_EMPLOYER_USER`
+    FOREIGN KEY (`USER`)
+    REFERENCES `jobspot`.`SYSTEMUSER` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Table structure for table `education`
---
 
-DROP TABLE IF EXISTS `education`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `education` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `JOBSEEKER` int(11) NOT NULL,
-  `QUALIFICATION` varchar(255) NOT NULL DEFAULT '',
-  `PERIOD` varchar(255) NOT NULL DEFAULT '',
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
+-- -----------------------------------------------------
+-- Table `jobspot`.`VACANCY`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`VACANCY` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `TITLE` VARCHAR(255) NOT NULL DEFAULT '',
+  `EMPLOYER` INT NOT NULL,
+  `PUBLISHEDON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `REFRESHEDON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `STARTDATE` DATETIME NOT NULL DEFAULT current_timestamp,
+  `ENDDATE` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`CODE`),
-  KEY `FK_EDUCATION_JOBSEEKER_idx` (`JOBSEEKER`),
-  CONSTRAINT `FK_EDUCATION_JOBSEEKER` FOREIGN KEY (`JOBSEEKER`) REFERENCES `jobseeker` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  INDEX `FK_VACANCY_EMPLOYER_idx` (`EMPLOYER` ASC),
+  CONSTRAINT `FK_VACANCY_EMPLOYER`
+    FOREIGN KEY (`EMPLOYER`)
+    REFERENCES `jobspot`.`EMPLOYER` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Table structure for table `employer`
---
 
-DROP TABLE IF EXISTS `employer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `employer` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(45) NOT NULL DEFAULT '',
-  `USER` int(11) DEFAULT NULL,
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
-  `TOWN` bigint(20) unsigned NOT NULL,
-  `INDUSTRY` varchar(255) NOT NULL,
-  `COMPANYSIZE` varchar(255) NOT NULL,
-  `ABOUT` varchar(1000) NOT NULL,
-  `LOGO` varchar(255) NOT NULL,
-  `TYPE` varchar(255) NOT NULL,
+-- -----------------------------------------------------
+-- Table `jobspot`.`JOBSEEKER`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`JOBSEEKER` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `FIRSTNAME` VARCHAR(255) NOT NULL DEFAULT '',
+  `LASTNAME` VARCHAR(255) NOT NULL DEFAULT '',
+  `DOB` DATETIME NOT NULL DEFAULT current_timestamp,
+  `USER` INT NOT NULL,
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`CODE`),
-  KEY `FK_EMPLOYER_USER_idx` (`USER`),
-  CONSTRAINT `FK_EMPLOYER_USER` FOREIGN KEY (`USER`) REFERENCES `systemuser` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  INDEX `FK_JOBSEEKER_USER_idx` (`USER` ASC),
+  CONSTRAINT `FK_JOBSEEKER_USER`
+    FOREIGN KEY (`USER`)
+    REFERENCES `jobspot`.`SYSTEMUSER` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Table structure for table `jobapplication`
---
 
-DROP TABLE IF EXISTS `jobapplication`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `jobapplication` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `VACANCY` int(11) NOT NULL,
-  `JOBSEEKER` int(11) NOT NULL,
-  `APPLIEDON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
+-- -----------------------------------------------------
+-- Table `jobspot`.`JOBAPPLICATION`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`JOBAPPLICATION` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `VACANCY` INT NOT NULL,
+  `JOBSEEKER` INT NOT NULL,
+  `APPLIEDON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`CODE`),
-  KEY `FK_APPLICATION_VACANCY_idx` (`VACANCY`),
-  KEY `FK_APPLICATION_JOBSEEKER_idx` (`JOBSEEKER`),
-  CONSTRAINT `FK_APPLICATION_JOBSEEKER` FOREIGN KEY (`JOBSEEKER`) REFERENCES `jobseeker` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_APPLICATION_VACANCY` FOREIGN KEY (`VACANCY`) REFERENCES `vacancy` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  INDEX `FK_APPLICATION_VACANCY_idx` (`VACANCY` ASC),
+  INDEX `FK_APPLICATION_JOBSEEKER_idx` (`JOBSEEKER` ASC),
+  CONSTRAINT `FK_APPLICATION_VACANCY`
+    FOREIGN KEY (`VACANCY`)
+    REFERENCES `jobspot`.`VACANCY` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_APPLICATION_JOBSEEKER`
+    FOREIGN KEY (`JOBSEEKER`)
+    REFERENCES `jobspot`.`JOBSEEKER` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Table structure for table `jobcategory`
---
 
-DROP TABLE IF EXISTS `jobcategory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `jobcategory` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(255) NOT NULL DEFAULT '',
-  `STATUS` int(11) NOT NULL DEFAULT '0',
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`CODE`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `jobseeker`
---
-
-DROP TABLE IF EXISTS `jobseeker`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `jobseeker` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `FIRSTNAME` varchar(255) NOT NULL DEFAULT '',
-  `LASTNAME` varchar(255) NOT NULL DEFAULT '',
-  `DOB` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `USER` int(11) NOT NULL,
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
+-- -----------------------------------------------------
+-- Table `jobspot`.`WORKEXPERIENCE`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`WORKEXPERIENCE` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `JOBSEEKER` INT NOT NULL,
+  `WORKEDAT` VARCHAR(255) NOT NULL DEFAULT '',
+  `PERIOD` VARCHAR(255) NOT NULL DEFAULT '',
+  `POSITION` VARCHAR(255) NOT NULL DEFAULT '',
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`CODE`),
-  KEY `FK_JOBSEEKER_USER_idx` (`USER`),
-  CONSTRAINT `FK_JOBSEEKER_USER` FOREIGN KEY (`USER`) REFERENCES `systemuser` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  INDEX `FK_WORKEXPERIENCE_JOBSEEKER_idx` (`JOBSEEKER` ASC),
+  CONSTRAINT `FK_WORKEXPERIENCE_JOBSEEKER`
+    FOREIGN KEY (`JOBSEEKER`)
+    REFERENCES `jobspot`.`JOBSEEKER` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Table structure for table `permission`
---
 
-DROP TABLE IF EXISTS `permission`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `permission` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(255) NOT NULL DEFAULT '',
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `permission_role`
---
-
-DROP TABLE IF EXISTS `permission_role`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `permission_role` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `ROLE` int(11) NOT NULL,
-  `ROLENAME` varchar(255) NOT NULL DEFAULT '',
-  `PERMISSION` int(11) NOT NULL,
-  `PERMISSIONNAME` varchar(45) NOT NULL DEFAULT '',
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
+-- -----------------------------------------------------
+-- Table `jobspot`.`EDUCATION`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`EDUCATION` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `JOBSEEKER` INT NOT NULL,
+  `QUALIFICATION` VARCHAR(255) NOT NULL DEFAULT '',
+  `PERIOD` VARCHAR(255) NOT NULL DEFAULT '',
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`CODE`),
-  KEY `FK_PERMISSION_ROLE_ROLE_idx` (`ROLE`),
-  KEY `FK_PERMISSION_ROLE_PERMISSION_idx` (`PERMISSION`),
-  CONSTRAINT `FK_PERMISSION_ROLE_PERMISSION` FOREIGN KEY (`PERMISSION`) REFERENCES `permission` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_PERMISSION_ROLE_ROLE` FOREIGN KEY (`ROLE`) REFERENCES `role` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  INDEX `FK_EDUCATION_JOBSEEKER_idx` (`JOBSEEKER` ASC),
+  CONSTRAINT `FK_EDUCATION_JOBSEEKER`
+    FOREIGN KEY (`JOBSEEKER`)
+    REFERENCES `jobspot`.`JOBSEEKER` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Table structure for table `role`
---
 
-DROP TABLE IF EXISTS `role`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `role` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(255) NOT NULL DEFAULT '',
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`CODE`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `systemuser`
---
-
-DROP TABLE IF EXISTS `systemuser`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `systemuser` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `PRIMARYEMAIL` varchar(255) NOT NULL DEFAULT '',
-  `USERNAME` varchar(255) NOT NULL DEFAULT '',
-  `PASSWORD` varchar(255) NOT NULL DEFAULT '',
-  `LASTLOGGEDON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`CODE`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `town`
---
-
-DROP TABLE IF EXISTS `town`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `town` (
-  `CODE` bigint(20) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(255) NOT NULL DEFAULT '',
-  `STATUS` int(11) NOT NULL DEFAULT '0',
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`CODE`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_role`
---
-
-DROP TABLE IF EXISTS `user_role`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_role` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `USERNAME` varchar(255) NOT NULL,
-  `ROLENAME` varchar(255) NOT NULL,
-  `AUTHORITY` varchar(255) NOT NULL,
-  `USER` int(11) NOT NULL,
-  `ROLE` int(11) NOT NULL,
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
+-- -----------------------------------------------------
+-- Table `jobspot`.`COMPETENCIES`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`COMPETENCIES` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `JOBSEEKER` INT NOT NULL,
+  `SKILL` VARCHAR(255) NOT NULL DEFAULT '',
+  `LEVEL` VARCHAR(255) NOT NULL DEFAULT '0',
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`CODE`),
-  UNIQUE KEY `USERNAME_UNIQUE` (`USERNAME`),
-  UNIQUE KEY `ROLE_UNIQUE` (`ROLENAME`),
-  KEY `FK_USER_ROLE_USER_idx` (`USER`),
-  KEY `FK_USER_ROLE_ROLE_idx` (`ROLE`),
-  CONSTRAINT `FK_USER_ROLE_ROLE` FOREIGN KEY (`ROLE`) REFERENCES `role` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_USER_ROLE_USER` FOREIGN KEY (`USER`) REFERENCES `systemuser` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  INDEX `FK_COMPETENCIES_JOBSEEKER_idx` (`JOBSEEKER` ASC),
+  CONSTRAINT `FK_COMPETENCIES_JOBSEEKER`
+    FOREIGN KEY (`JOBSEEKER`)
+    REFERENCES `jobspot`.`JOBSEEKER` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Table structure for table `vacancy`
---
 
-DROP TABLE IF EXISTS `vacancy`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `vacancy` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `TITLE` varchar(255) NOT NULL DEFAULT '',
-  `EMPLOYER` int(11) NOT NULL,
-  `PUBLISHEDON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `REFRESHEDON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `STARTDATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `ENDDATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
-  `BASIC` double NOT NULL DEFAULT '0',
-  `ARTWORK` varchar(255) NOT NULL DEFAULT '',
+-- -----------------------------------------------------
+-- Table `jobspot`.`ROLE`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`ROLE` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `NAME` VARCHAR(255) NOT NULL DEFAULT '',
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`CODE`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `jobspot`.`USER_ROLE`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`USER_ROLE` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `USERNAME` VARCHAR(255) NOT NULL,
+  `ROLENAME` VARCHAR(255) NOT NULL,
+  `AUTHORITY` VARCHAR(255) NOT NULL,
+  `USER` INT NOT NULL,
+  `ROLE` INT NOT NULL,
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`CODE`),
-  KEY `FK_VACANCY_EMPLOYER_idx` (`EMPLOYER`),
-  CONSTRAINT `FK_VACANCY_EMPLOYER` FOREIGN KEY (`EMPLOYER`) REFERENCES `employer` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  UNIQUE INDEX `USERNAME_UNIQUE` (`USERNAME` ASC),
+  UNIQUE INDEX `ROLE_UNIQUE` (`ROLENAME` ASC),
+  INDEX `FK_USER_ROLE_USER_idx` (`USER` ASC),
+  INDEX `FK_USER_ROLE_ROLE_idx` (`ROLE` ASC),
+  CONSTRAINT `FK_USER_ROLE_USER`
+    FOREIGN KEY (`USER`)
+    REFERENCES `jobspot`.`SYSTEMUSER` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_USER_ROLE_ROLE`
+    FOREIGN KEY (`ROLE`)
+    REFERENCES `jobspot`.`ROLE` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Table structure for table `vacancy_jobcategory`
---
 
-DROP TABLE IF EXISTS `vacancy_jobcategory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `vacancy_jobcategory` (
-  `CODE` bigint(20) NOT NULL AUTO_INCREMENT,
-  `VACANCY` int(11) NOT NULL,
-  `JOBCATEGORY` int(11) NOT NULL,
+-- -----------------------------------------------------
+-- Table `jobspot`.`PERMISSION`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`PERMISSION` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `NAME` VARCHAR(255) NOT NULL DEFAULT '',
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`CODE`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `jobspot`.`PERMISSION_ROLE`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`PERMISSION_ROLE` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `ROLE` INT NOT NULL,
+  `ROLENAME` VARCHAR(255) NOT NULL DEFAULT '',
+  `PERMISSION` INT NOT NULL,
+  `PERMISSIONNAME` VARCHAR(45) NOT NULL DEFAULT '',
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`CODE`),
-  KEY `VACANCY_JOBCATEGORY_VACANCY` (`VACANCY`),
-  KEY `VACANCY_JOBCATEGORY_JOBCATEGORY` (`JOBCATEGORY`),
-  CONSTRAINT `VACANCY_JOBCATEGORY_JOBCATEGORY` FOREIGN KEY (`JOBCATEGORY`) REFERENCES `jobcategory` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `VACANCY_JOBCATEGORY_VACANCY` FOREIGN KEY (`VACANCY`) REFERENCES `vacancy` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  INDEX `FK_PERMISSION_ROLE_ROLE_idx` (`ROLE` ASC),
+  INDEX `FK_PERMISSION_ROLE_PERMISSION_idx` (`PERMISSION` ASC),
+  CONSTRAINT `FK_PERMISSION_ROLE_ROLE`
+    FOREIGN KEY (`ROLE`)
+    REFERENCES `jobspot`.`ROLE` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_PERMISSION_ROLE_PERMISSION`
+    FOREIGN KEY (`PERMISSION`)
+    REFERENCES `jobspot`.`PERMISSION` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Table structure for table `vacancy_town`
---
 
-DROP TABLE IF EXISTS `vacancy_town`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `vacancy_town` (
-  `CODE` bigint(20) NOT NULL AUTO_INCREMENT,
-  `VACANCY` int(11) NOT NULL,
-  `TOWN` bigint(20) NOT NULL,
-  PRIMARY KEY (`CODE`),
-  KEY `VACANCY_TOWN_VACANCY` (`VACANCY`),
-  KEY `VACANCY_TOWN_TOWN` (`TOWN`),
-  CONSTRAINT `VACANCY_TOWN_TOWN` FOREIGN KEY (`TOWN`) REFERENCES `town` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `VACANCY_TOWN_VACANCY` FOREIGN KEY (`VACANCY`) REFERENCES `vacancy` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- -----------------------------------------------------
+-- Table `jobspot`.`JOBCATEGORY`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`JOBCATEGORY` (
+  `CODE` INT NOT NULL AUTO_INCREMENT,
+  `NAME` VARCHAR(255) NOT NULL DEFAULT '',
+  `STATUS` INT NOT NULL DEFAULT 0,
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`CODE`))
+ENGINE = InnoDB;
 
---
--- Table structure for table `workexperience`
---
+-- -----------------------------------------------------
+-- Table `jobspot`.`TOWN`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`TOWN` (
+  `CODE` BIGINT NOT NULL AUTO_INCREMENT,
+  `NAME` VARCHAR(255) NOT NULL DEFAULT '',
+  `STATUS` INT NOT NULL DEFAULT 0,
+  `MASK` INT NOT NULL DEFAULT 0,
+  `SORT` INT NOT NULL DEFAULT 0,
+  `CRTON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `CRTBY` VARCHAR(255) NOT NULL DEFAULT '',
+  `MODON` DATETIME NOT NULL DEFAULT current_timestamp,
+  `MODBY` VARCHAR(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`CODE`))
+ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS `workexperience`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `workexperience` (
-  `CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `JOBSEEKER` int(11) NOT NULL,
-  `WORKEDAT` varchar(255) NOT NULL DEFAULT '',
-  `PERIOD` varchar(255) NOT NULL DEFAULT '',
-  `POSITION` varchar(255) NOT NULL DEFAULT '',
-  `MASK` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '0',
-  `CRTON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CRTBY` varchar(255) NOT NULL DEFAULT '',
-  `MODON` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `MODBY` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`CODE`),
-  KEY `FK_WORKEXPERIENCE_JOBSEEKER_idx` (`JOBSEEKER`),
-  CONSTRAINT `FK_WORKEXPERIENCE_JOBSEEKER` FOREIGN KEY (`JOBSEEKER`) REFERENCES `jobseeker` (`CODE`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+-- -----------------------------------------------------
+-- Table `jobspot`.`VACANCY_JOBCATEGORY`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`VACANCY_JOBCATEGORY` (
+  `CODE` BIGINT NOT NULL AUTO_INCREMENT,
+  `VACANCY` INT NOT NULL,
+  `JOBCATEGORY` INT NOT NULL,
+  CONSTRAINT `VACANCY_JOBCATEGORY_VACANCY`
+    FOREIGN KEY (`VACANCY`)
+    REFERENCES `jobspot`.`VACANCY` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `VACANCY_JOBCATEGORY_JOBCATEGORY`
+    FOREIGN KEY (`JOBCATEGORY`)
+    REFERENCES `jobspot`.`JOBCATEGORY` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  PRIMARY KEY (`CODE`))
+ENGINE = InnoDB;
 
--- Dump completed on 2016-08-10 19:29:35
+-- -----------------------------------------------------
+-- Table `jobspot`.`VACANCY_JOBCATEGORY`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `jobspot`.`VACANCY_TOWN` (
+  `CODE` BIGINT NOT NULL AUTO_INCREMENT,
+  `VACANCY` INT NOT NULL,
+  `TOWN` INT NOT NULL,
+  CONSTRAINT `VACANCY_TOWN_VACANCY`
+    FOREIGN KEY (`VACANCY`)
+    REFERENCES `jobspot`.`VACANCY` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `VACANCY_TOWN_TOWN`
+    FOREIGN KEY (`TOWN`)
+    REFERENCES `jobspot`.`TOWN` (`CODE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  PRIMARY KEY (`CODE`))
+ENGINE = InnoDB;
+
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

@@ -6,7 +6,7 @@ import java.util.Map;
 import com.eooz.common.form.Form;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.common.util.ValidationUtil;
-import com.jobspot.master.Vacancy;
+import com.jobspot.dto.Vacancy;
 
 public class PublishVacancyForm implements Form {
 
@@ -176,7 +176,7 @@ public class PublishVacancyForm implements Form {
 
 	public String artwork() {
 		// TODO Auto-generated method stub
-		return "WIRED_TO THE FORM_GET";
+		return vacancy.getArtwork();
 	}
 
 	public String employer() {
