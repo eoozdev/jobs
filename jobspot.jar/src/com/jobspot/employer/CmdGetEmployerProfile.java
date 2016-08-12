@@ -16,7 +16,6 @@ import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
 import com.jobspot.dto.Employer;
-import com.jobspot.employer.form.EmployerProfile;
 import com.jobspot.employer.jdbc.operations.AddEmployerToSession;
 import com.jobspot.employer.jdbc.operations.GetEmployerProfile;
 import com.jobspot.employer.jdbc.operations.GetJobCategories;

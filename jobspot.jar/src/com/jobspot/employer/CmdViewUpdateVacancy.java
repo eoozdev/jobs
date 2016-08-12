@@ -18,7 +18,6 @@ import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
 import com.jobspot.dto.Vacancy;
-import com.jobspot.employer.form.PublishVacancyForm;
 import com.jobspot.employer.jdbc.operations.GetJobCategories;
 import com.jobspot.employer.jdbc.operations.GetTowns;
 import com.jobspot.employer.jdbc.operations.GetVacancy;

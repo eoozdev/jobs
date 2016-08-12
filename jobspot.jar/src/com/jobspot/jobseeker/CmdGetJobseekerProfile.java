@@ -12,6 +12,7 @@ import com.eooz.common.util.RequestWrap;
 import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
+import com.jobspot.dto.Jobseeker;
 import com.jobspot.jobseeker.jdbc.operations.AddJobseekerToSession;
 import com.jobspot.jobseeker.jdbc.operations.IsMyProfile;
 
@@ -47,7 +48,10 @@ public class CmdGetJobseekerProfile extends AbstractCommand implements GetComman
 				return toJson(page);
 			}
 			
-			
+			Jobseeker js = new Jobseeker(jobseekerCode);
+			js = new GetJobseekerProfile(js).find();
+			JobseekerProfile profile = new JobseekerProfile(js);
+			page.setForm(profile);
 			
 			
 			}

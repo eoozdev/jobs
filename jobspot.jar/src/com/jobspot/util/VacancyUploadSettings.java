@@ -3,7 +3,7 @@ package com.jobspot.util;
 import java.util.Map;
 
 import com.eooz.common.util.UploadSettings;
-import com.jobspot.employer.form.FIELD_NAME;
+import com.jobspot.common.FIELD_NAME;
 
 public class VacancyUploadSettings implements UploadSettings {
 

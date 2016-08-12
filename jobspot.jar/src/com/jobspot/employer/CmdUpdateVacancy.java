@@ -24,7 +24,6 @@ import com.eooz.common.util.SQLConnection;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
 import com.jobspot.dto.Vacancy;
-import com.jobspot.employer.form.PublishVacancyForm;
 import com.jobspot.employer.jdbc.operations.AddEmployerToSession;
 import com.jobspot.employer.jdbc.operations.IsMyVacancy;
 
