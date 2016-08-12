@@ -15,7 +15,8 @@ public enum Command {
 	REGISTER_USER("EZRU", CommandType.POST), 
 	UPDATE_VACANCY_VIEW("EZUVV", CommandType.GET), 
 	EMPLOYER_VACANCY_PG("EZEVP", CommandType.GET),
-	EMPLOYER_PROFILE("EZEP",CommandType.GET);
+	EMPLOYER_PROFILE("EZEP",CommandType.GET),
+	UPDATE_EMPLOYER_PROFILE("EZUEP", CommandType.POST);
 	
 	
 	private String value;

@@ -17,11 +17,11 @@ import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
 import com.jobspot.dto.Employer;
 import com.jobspot.employer.form.EmployerProfile;
-import com.jobspot.jdbc.operations.AddEmployerToSession;
-import com.jobspot.jdbc.operations.GetEmployerProfile;
-import com.jobspot.jdbc.operations.GetJobCategories;
-import com.jobspot.jdbc.operations.GetTowns;
-import com.jobspot.jdbc.operations.IsMyProfile;
+import com.jobspot.employer.jdbc.operations.AddEmployerToSession;
+import com.jobspot.employer.jdbc.operations.GetEmployerProfile;
+import com.jobspot.employer.jdbc.operations.GetJobCategories;
+import com.jobspot.employer.jdbc.operations.GetTowns;
+import com.jobspot.employer.jdbc.operations.IsMyProfile;
 
 public class CmdGetEmployerProfile extends AbstractCommand implements GetCommand {
 
@@ -88,10 +88,7 @@ public class CmdGetEmployerProfile extends AbstractCommand implements GetCommand
 		return new CmdGetEmployerProfile(request, response);
 	}
 
-	@Override
-	public IPage getParameters(RequestWrap request) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+
 
 }

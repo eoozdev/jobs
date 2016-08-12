@@ -19,9 +19,9 @@ import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
 import com.jobspot.dto.Vacancy;
 import com.jobspot.employer.form.PublishVacancyForm;
-import com.jobspot.jdbc.operations.GetJobCategories;
-import com.jobspot.jdbc.operations.GetTowns;
-import com.jobspot.jdbc.operations.GetVacancy;
+import com.jobspot.employer.jdbc.operations.GetJobCategories;
+import com.jobspot.employer.jdbc.operations.GetTowns;
+import com.jobspot.employer.jdbc.operations.GetVacancy;
 
 public class CmdViewUpdateVacancy extends AbstractCommand implements GetCommand {
 
@@ -32,7 +32,9 @@ public class CmdViewUpdateVacancy extends AbstractCommand implements GetCommand 
 		this.request = request;
 	}
 
-	public CmdViewUpdateVacancy() { }
+	public CmdViewUpdateVacancy() {
+		logger.info("--> default construction of command.");
+	}
 
 	@Override
 	public String doWork() {
@@ -78,10 +80,6 @@ public class CmdViewUpdateVacancy extends AbstractCommand implements GetCommand 
 		return new CmdViewUpdateVacancy(request, response);
 	}
 
-	@Override
-	public IPage getParameters(RequestWrap request) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 }

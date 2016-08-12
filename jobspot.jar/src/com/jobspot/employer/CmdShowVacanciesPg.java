@@ -15,7 +15,7 @@ import com.eooz.common.util.RequestWrap;
 import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
-import com.jobspot.jdbc.operations.GeGetVacancies;
+import com.jobspot.employer.jdbc.operations.GeGetVacancies;
 
 public class CmdShowVacanciesPg extends AbstractCommand implements GetCommand {
 
@@ -57,10 +57,6 @@ public class CmdShowVacanciesPg extends AbstractCommand implements GetCommand {
 		return new CmdShowVacanciesPg();
 	}
 
-	@Override
-	public IPage getParameters(RequestWrap request) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 }

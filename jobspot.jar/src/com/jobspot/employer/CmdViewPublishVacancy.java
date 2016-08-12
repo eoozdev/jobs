@@ -17,8 +17,8 @@ import com.eooz.common.util.RequestWrap;
 import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
-import com.jobspot.jdbc.operations.GetJobCategories;
-import com.jobspot.jdbc.operations.GetTowns;
+import com.jobspot.employer.jdbc.operations.GetJobCategories;
+import com.jobspot.employer.jdbc.operations.GetTowns;
 
 public class CmdViewPublishVacancy extends AbstractCommand implements GetCommand{
 
@@ -26,7 +26,9 @@ public class CmdViewPublishVacancy extends AbstractCommand implements GetCommand
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 
-	CmdViewPublishVacancy(){}
+	CmdViewPublishVacancy(){
+		logger.info("--> default construction of command.");
+	}
 
 	
 	
@@ -81,13 +83,6 @@ public class CmdViewPublishVacancy extends AbstractCommand implements GetCommand
 	}
 
 
-
-
-	@Override
-	public IPage getParameters(RequestWrap request) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 

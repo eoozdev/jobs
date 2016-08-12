@@ -29,14 +29,16 @@ public class RequestWrap {
 	public String getParameter(String key){
 		return this.request.getParameter(key);
 	}
-
+	@SuppressWarnings({ "unchecked"})
 	private Iterator<FileItem> parameterSetup() throws FileUploadException {
 		
+
+		if(!ServletFileUpload.isMultipartContent(request))return null;
+	
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		
-
-		@SuppressWarnings("unchecked")
+		
 		List<FileItem>items = upload.parseRequest(request);
 		parameters = new HashMap<String, String>();
 		return items.iterator();
@@ -49,6 +51,9 @@ public class RequestWrap {
 		try{
 			
 			Iterator<FileItem> iter = parameterSetup();
+			
+			if(iter == null)
+				return paramMap();
 			
 			while (iter.hasNext()) {
 			    FileItem item = iter.next();
@@ -70,6 +75,19 @@ public class RequestWrap {
 		
 	}
 
+
+	private Map<String, String> paramMap() {
+		
+		Map<String, String[]> map = request.getParameterMap();
+		Map<String, String> params = new HashMap<String, String>();
+		for(String each : map.keySet()){
+			logger.info("----------------------------------"+each);
+			params.put(each, ((String[])map.get(each))[0]);
+		}
+		
+		
+		return params;
+	}
 
 	public FileItem getFileitem() {
 		try{

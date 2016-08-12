@@ -1,8 +1,8 @@
 package com.jobspot.employer;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,30 +12,25 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.eooz.common.command.CmdUpload;
+import com.eooz.common.command.IUploadCommand;
 import com.eooz.common.util.RequestWrap;
-import com.eooz.common.util.ResponseWrap;
-import com.jobspot.common.CommandInvoker;
+import com.eooz.common.util.UploadSettings;
+import com.jobspot.util.VacancyUploadSettings;
 
 /**
- * Servlet implementation class Employer
+ * Servlet implementation class FileUploader
  */
-@WebServlet("/do.employer")
-public class Employer extends HttpServlet {
-	
+@WebServlet("/do.vupload")
+public class VacancyUploader extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Logger logger = LoggerFactory.getLogger(Vacancy.class);  
-    
-	/**
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    /**
      * @see HttpServlet#HttpServlet()
      */
-    public Employer() {
+    public VacancyUploader() {
         super();
         // TODO Auto-generated constructor stub
-    }
-    
-    public void init(ServletConfig config) throws ServletException{
-    	super.init(config);
-    	new EmployerServletInit().init();
     }
 
 	/**
@@ -49,16 +44,25 @@ public class Employer extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
 		try{
 			
-			new CommandInvoker(new RequestWrap(request), new ResponseWrap(response))
-				.invoke();
+			UploadSettings settings = new VacancyUploadSettings();
+			IUploadCommand command  = new CmdUpload(new RequestWrap(request), settings);
+			String info = command.doWork();
 			
+			PrintWriter writer = response.getWriter();
+			writer.write(info);
+			writer.flush();
 		}
 		
 		catch(Exception e){
-			logger.error("--> doPost(): servlet level exception: "+e);
+			logger.error("--> doPost(): ERR"+e);
+			
 		}
+		
+		
 	}
 
 }

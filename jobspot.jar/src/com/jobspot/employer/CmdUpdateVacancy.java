@@ -25,8 +25,8 @@ import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
 import com.jobspot.dto.Vacancy;
 import com.jobspot.employer.form.PublishVacancyForm;
-import com.jobspot.jdbc.operations.AddEmployerToSession;
-import com.jobspot.jdbc.operations.IsMyVacancy;
+import com.jobspot.employer.jdbc.operations.AddEmployerToSession;
+import com.jobspot.employer.jdbc.operations.IsMyVacancy;
 
 public class CmdUpdateVacancy extends AbstractCommand implements PostCommand{
 
@@ -38,7 +38,7 @@ public class CmdUpdateVacancy extends AbstractCommand implements PostCommand{
 	}
 
 	public CmdUpdateVacancy() {
-		// TODO Auto-generated constructor stub
+		logger.info("--> default construction of command.");
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class CmdUpdateVacancy extends AbstractCommand implements PostCommand{
 								form.startdate(), 
 								form.enddate(), 
 								form.employer(), form.vacancyCode());
-						
+						page.setMessage(SYSTEM_MESAGE.SUCCESSFUL.value());
 						
 					}
 					

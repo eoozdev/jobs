@@ -26,8 +26,8 @@ import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
 import com.jobspot.dto.Vacancy;
 import com.jobspot.employer.form.PublishVacancyForm;
-import com.jobspot.jdbc.operations.AddEmployerToSession;
-import com.jobspot.jdbc.operations.IsMyVacancy;
+import com.jobspot.employer.jdbc.operations.AddEmployerToSession;
+import com.jobspot.employer.jdbc.operations.IsMyVacancy;
 
 public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
 
@@ -40,7 +40,9 @@ public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
 
 
 	//default constructor
-	public CmdPublishVacancy(){}
+	public CmdPublishVacancy(){
+		logger.info("--> default construction of command.");
+	}
 
 	
 
