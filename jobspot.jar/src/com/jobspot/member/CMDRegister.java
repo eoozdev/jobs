@@ -19,6 +19,8 @@ import com.eooz.common.util.RequestWrap;
 import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SQLConnection;
 import com.eooz.security.SecurityUtil;
+import com.jobspot.employer.jdbc.operations.CreateEmployerProfile;
+import com.jobspot.jobseeker.jdbc.operations.CreatejobseekerProfile;
 
 public class CMDRegister extends AbstractCommand implements PostCommand{
 
@@ -82,6 +84,18 @@ public class CMDRegister extends AbstractCommand implements PostCommand{
 
 
 
+	private void createProfile(SignUpForm form, String userCode) {
+		String role = form.role();
+		
+		if(role.equalsIgnoreCase(Role.JOBSEEKER.value()))
+			new CreatejobseekerProfile().create(userCode);
+		
+		if(role.equalsIgnoreCase(Role.EMPLOYER.value()))
+			new CreateEmployerProfile().create(userCode);
+	}
+
+
+
 	private boolean isNewAccount(SignUpForm form) throws SQLException {
 		
 		boolean exists = true;
@@ -126,6 +140,7 @@ public class CMDRegister extends AbstractCommand implements PostCommand{
 
 		String code = createUser(form);
 		createUserRole(form, code);
+		createProfile(form, code);
 		
 	}
 

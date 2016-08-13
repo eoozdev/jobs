@@ -26,7 +26,6 @@ import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
 import com.jobspot.dto.Vacancy;
 import com.jobspot.employer.jdbc.operations.AddEmployerToSession;
-import com.jobspot.employer.jdbc.operations.IsMyVacancy;
 
 public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
 
@@ -165,7 +164,7 @@ public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
 			ps.setString(3, basic);
 			ps.setString(4, startdate);
 			ps.setString(5, enddate);
-			ps.setString(6, artwork);
+			ps.setString(6, "");
 			ps.executeUpdate();
 			rs = ps.getGeneratedKeys();
 			
@@ -200,7 +199,7 @@ public class CmdPublishVacancy extends AbstractCommand implements PostCommand {
 	
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "INSERT INTO VACANCY_TOWN (VACANCY, TOWN) VALUES(?,?)";
+		String sql = "INSERT INTO VACANCY_LOCATION (VACANCY, TOWN) VALUES(?,?)";
 		
 		try{
 			

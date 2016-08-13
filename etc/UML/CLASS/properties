@@ -1,2 +1,0 @@
-JDBC Driver class name:  mongodb.jdbc.MongoDriver
-URL format:              jdbc:mongo://<serverName>/<databaseName>

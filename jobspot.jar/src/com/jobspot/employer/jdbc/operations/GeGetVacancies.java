@@ -24,7 +24,7 @@ public class GeGetVacancies {
 		PreparedStatement ps = null;
 		String sql = "SELECT VT.TOWN, VJC.JOBCATEGORY, V.TITLE, V.ARTWORK, V.BASIC, V.STARTDATE, V.ENDDATE FROM VACANCY V "
 				+ " INNER JOIN VACANCY_JOBCATEGORY VJC ON VJC.VACANCY = V.CODE "
-				+ " INNER JOIN VACANCY_TOWN VT ON VT.VACANCY = V.CODE WHERE V.EMPLOYER = ?";
+				+ " INNER JOIN VACANCY_LOCATION VT ON VT.VACANCY = V.CODE WHERE V.EMPLOYER = ?";
 		Collection<Object> vacancies = new ArrayList<Object>();
 		
 		try{

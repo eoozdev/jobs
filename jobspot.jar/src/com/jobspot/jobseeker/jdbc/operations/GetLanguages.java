@@ -4,28 +4,31 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.eooz.common.util.AddToSession;
 import com.eooz.common.util.SQLConnection;
-import com.eooz.security.SecurityUtil;
+import com.jobspot.dto.Language;
 
-public class AddJobseekerToSession implements AddToSession {
-
+public class GetLanguages {
+	private String js;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@Override
-	public void add() {
-
+	public GetLanguages(String js) {
+		this.js = js;
 		
-		String username = SecurityUtil.getUsername();
+	}
+
+	public ArrayList<Language> getCollection() {
+		
+		String sql = "SELECT CODE, NAME, PROFICIENCY FROM LANGUAGE WHERE JOBSEEKER = ? ";
 		
 		ResultSet rs = null;
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "SELECT J.CODE FROM JOBSEEKER J INNER JOIN SYSTEMUSER U ON U.CODE = J.USER WHERE U.USERNAME = ?";
+		ArrayList<Language> languages = null;
 		
 		try{
 			
@@ -33,37 +36,46 @@ public class AddJobseekerToSession implements AddToSession {
 			con = SQLConnection.getConnection();
 			ps = con.prepareStatement(sql);
 			
-			ps.setString(1, username);
+			ps.setString(1, js);
 			rs = ps.executeQuery();
 			
-			if(rs.next()){
-				String code = rs.getString(1);
-				SecurityUtil.addToSession("JOBSEEKER_CODE",code);
+			languages = new ArrayList<Language>();
+			
+			while (rs.next()){
+				
+
+				Language l = new Language();
+
+				l.setCode(rs.getString("CODE"));
+				l.setName(rs.getString("NAME"));
+				l.setProficiency("PROFICIENCY");
+				
+				languages.add(l);
+				
 			}
+
 			
 		}
 		
 		catch(Exception e){
-			logger.error("add()"+e);
+			logger.error("--> getCollection(): SQLE: "+e);
 		}
 		
 		finally{
-			
+
 			try{
 				
 				if(rs != null) rs.close();
 				if(ps != null) ps.close();
 				if(con != null) con.close();
-				
 			}
 			
 			catch(SQLException sqle){
-				logger.error("add()"+sqle);
+				logger.error("--> getCollection(): SQLE"+ sqle);
 			}
 		}
 		
-		
+		return languages;
 	
 	}
-
 }

@@ -224,7 +224,7 @@ public class CmdUpdateVacancy extends AbstractCommand implements PostCommand{
 	private void mapWithTown(String id, String town) {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "UPDATE VACANCY_TOWN SET TOWN = ? WHERE VACANCY = ?";
+		String sql = "UPDATE VACANCY_LOCATION SET TOWN = ? WHERE VACANCY = ?";
 		
 		try{
 			

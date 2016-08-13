@@ -1,5 +1,5 @@
 <%-- 20160804 SAM do_redirect.jsp: redirects to the logged on member landing page --%>
-<%@page import="com.jobspot.jdbc.operations.AddEmployerToSession"%>
+<%@page import="com.jobspot.employer.jdbc.operations.AddEmployerToSession"%>
 <%@page import="com.eooz.security.SecurityUtil"%>
 	
 	<%

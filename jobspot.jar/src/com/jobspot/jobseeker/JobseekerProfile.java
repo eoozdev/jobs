@@ -5,26 +5,27 @@ import com.jobspot.dto.Jobseeker;
 
 public class JobseekerProfile implements Form{
 
+	Jobseeker jobseeker;
+	boolean validated = false;
+	
 	public JobseekerProfile(Jobseeker js) {
-		// TODO Auto-generated constructor stub
+		jobseeker = js;
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		this.jobseeker = new Jobseeker();
 	}
 
 	@Override
 	public void validate() {
-		// TODO Auto-generated method stub
-		
+		validated = true;
 	}
 
 	@Override
 	public boolean validated() {
 		// TODO Auto-generated method stub
-		return false;
+		return validated;
 	}
 
 

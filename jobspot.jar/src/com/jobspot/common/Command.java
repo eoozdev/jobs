@@ -16,7 +16,8 @@ public enum Command {
 	UPDATE_VACANCY_VIEW("EZUVV", CommandType.GET), 
 	EMPLOYER_VACANCY_PG("EZEVP", CommandType.GET),
 	EMPLOYER_PROFILE("EZEP",CommandType.GET),
-	UPDATE_EMPLOYER_PROFILE("EZUEP", CommandType.POST);
+	UPDATE_EMPLOYER_PROFILE("EZUEP", CommandType.POST),
+	VIEW_MY_PROFILE("EZVMP", CommandType.GET);
 	
 	
 	private String value;

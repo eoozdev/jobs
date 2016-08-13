@@ -8,61 +8,68 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.eooz.common.util.AddToSession;
 import com.eooz.common.util.SQLConnection;
-import com.eooz.security.SecurityUtil;
+import com.jobspot.dto.Jobseeker;
 
-public class AddJobseekerToSession implements AddToSession {
+public class GetJobseeker {
 
+	private Jobseeker js;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@Override
-	public void add() {
-
+	public GetJobseeker(Jobseeker js) {
+		this.js = js;
 		
-		String username = SecurityUtil.getUsername();
+	}
+
+	public Jobseeker find() {
+		
+		String sql = "SELECT JS.FIRSTNAME, JS.LASTNAME, JS.DOB, JS.STATUS AS JSTATUS  FROM JOBSEEKER JS WHERE JS.CODE = ? ";
 		
 		ResultSet rs = null;
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "SELECT J.CODE FROM JOBSEEKER J INNER JOIN SYSTEMUSER U ON U.CODE = J.USER WHERE U.USERNAME = ?";
-		
 		try{
 			
 			
 			con = SQLConnection.getConnection();
 			ps = con.prepareStatement(sql);
 			
-			ps.setString(1, username);
+			ps.setString(1, js.getCode());
 			rs = ps.executeQuery();
+						
+			this.js = new Jobseeker();
 			
-			if(rs.next()){
-				String code = rs.getString(1);
-				SecurityUtil.addToSession("JOBSEEKER_CODE",code);
+			while (rs.next()){
+								
+				js.setDob(rs.getString("DOB"));
+				js.setFirstname(rs.getString("FIRSTNAME"));
+				js.setLastname(rs.getString("LASTNAME"));
+				js.setStatus(rs.getString("JSTATUS"));
+								
 			}
+
 			
 		}
 		
 		catch(Exception e){
-			logger.error("add()"+e);
+			logger.error("--> getInstance(): SQLE: "+e);
 		}
 		
 		finally{
-			
+
 			try{
 				
 				if(rs != null) rs.close();
 				if(ps != null) ps.close();
 				if(con != null) con.close();
-				
 			}
 			
 			catch(SQLException sqle){
-				logger.error("add()"+sqle);
+				logger.error("--> getInstance(): SQLE"+ sqle);
 			}
 		}
 		
-		
+		return this.js;
 	
 	}
 

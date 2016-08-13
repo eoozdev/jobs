@@ -1,5 +1,7 @@
 package com.jobspot.jobseeker;
 
+import java.util.ArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +14,15 @@ import com.eooz.common.util.RequestWrap;
 import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SYSTEM_MESAGE;
 import com.eooz.security.SecurityUtil;
+import com.jobspot.dto.Education;
 import com.jobspot.dto.Jobseeker;
+import com.jobspot.dto.Language;
+import com.jobspot.dto.WorkExperience;
 import com.jobspot.jobseeker.jdbc.operations.AddJobseekerToSession;
+import com.jobspot.jobseeker.jdbc.operations.GetEducation;
+import com.jobspot.jobseeker.jdbc.operations.GetJobseeker;
+import com.jobspot.jobseeker.jdbc.operations.GetLanguages;
+import com.jobspot.jobseeker.jdbc.operations.GetWorkExperience;
 import com.jobspot.jobseeker.jdbc.operations.IsMyProfile;
 
 public class CmdGetJobseekerProfile extends AbstractCommand implements GetCommand {
@@ -25,6 +34,9 @@ public class CmdGetJobseekerProfile extends AbstractCommand implements GetComman
 	public CmdGetJobseekerProfile(RequestWrap request, ResponseWrap response) {
 		this.request = request;
 		this.response = response;
+	}
+	
+	public CmdGetJobseekerProfile() {
 	}
 
 	@Override
@@ -49,7 +61,16 @@ public class CmdGetJobseekerProfile extends AbstractCommand implements GetComman
 			}
 			
 			Jobseeker js = new Jobseeker(jobseekerCode);
-			js = new GetJobseekerProfile(js).find();
+			
+			js = new GetJobseeker(js).find();
+			ArrayList<Language> ll = new GetLanguages(js.getCode()).getCollection();
+			ArrayList<Education> el = new GetEducation(js.getCode()).getCollection();
+			ArrayList<WorkExperience> wl = new GetWorkExperience(js.getCode()).getCollection();
+		
+			js.setLanguage(ll);
+			js.setEducation(el);
+			js.setWorkExperience(wl);
+			
 			JobseekerProfile profile = new JobseekerProfile(js);
 			page.setForm(profile);
 			
