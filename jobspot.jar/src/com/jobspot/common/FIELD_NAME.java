@@ -16,7 +16,19 @@ public enum FIELD_NAME {
 	EMPLOYER_NAME("employerName"),
 	COMPANY_TYPE("companyType"),
 	COMPANY_SIZE("companySize"),
-	ABOUT("about");
+	ABOUT("about"),
+	
+	JS_FNAME("jsFname"),
+	JS_LNAME("jsLname"),
+	JS_DOB("jsDob"), 
+	LANG_NAME("lngName"), 
+	LANG_PROFICIENCY("lngProficiency"), 
+	EDU_QUALIFICATION_CODE("eduQualificationCode"), 
+	EDU_QUALIFICATION("eduQualification"), 
+	EDU_PERIOD("eduPeriod"), 
+	WORK_WORKEDAT("workWorkedAt"), 
+	WORK_POSITION("workPosition"), 
+	WORK_PERIOD("workPeriod");
 	
 	private String value;
 	

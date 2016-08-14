@@ -17,8 +17,15 @@ public enum Command {
 	EMPLOYER_VACANCY_PG("EZEVP", CommandType.GET),
 	EMPLOYER_PROFILE("EZEP",CommandType.GET),
 	UPDATE_EMPLOYER_PROFILE("EZUEP", CommandType.POST),
-	VIEW_MY_PROFILE("EZVMP", CommandType.GET);
 	
+	VIEW_MY_PROFILE("EZVMP", CommandType.GET),
+	UPDATE_JOBSEEKER("EZUJP",CommandType.PUT), 
+	UPDATE_JS_WORKEXPERIENCE("EZUWE",CommandType.PUT), 
+	UPDATE_JS_LANGUAGE("EZUL",CommandType.PUT), 
+	UPDATE_JS_EDUCATION("EZUE",CommandType.PUT),
+	CREATE_JS_LANGUAGE("EZCL",CommandType.POST),
+	CREATE_JS_EDUCATION("EZCE",CommandType.POST),
+	CREATE_JS_WORKEXPERIENCE("EZCW",CommandType.POST);
 	
 	private String value;
 	private CommandType operation;
