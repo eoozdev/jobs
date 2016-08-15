@@ -27,6 +27,8 @@ public interface IPage {
 	public void setCollectionTwo(String string, Collection<Object> list,  Map<String, Collection<Object>> map);
 	
 	public void setHrefToLogin();
+
+	public void setInstance(Object v);
 	
 
 

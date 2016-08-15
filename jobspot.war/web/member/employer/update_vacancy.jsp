@@ -1,4 +1,4 @@
-<%@page import="com.jobspot.employer.form.FIELD_NAME"%>
+<%@page import="com.jobspot.common.FIELD_NAME"%>
 <%@page import="com.jobspot.common.Command"%>
 
 

@@ -26,7 +26,7 @@ public class CmdViewPublishVacancy extends AbstractCommand implements GetCommand
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 
-	CmdViewPublishVacancy(){
+	public CmdViewPublishVacancy(){
 		logger.info("--> default construction of command.");
 	}
 

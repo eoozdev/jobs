@@ -29,6 +29,11 @@
     <error-code>401</error-code>
     <location>/error.jsp</location>
   </error-page>
+  
+  <listener>
+    <listener-class>com.jobspot.common.JobspotStartUp</listener-class>
+  </listener>
+  
   <listener>
     <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
   </listener>

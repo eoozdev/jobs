@@ -9,9 +9,11 @@ public class Employer {
 	private String logo;
 	private String type;
 	private String about;
+	private String status;
 	private String industry;
 	private String companySize;
-	private String status;
+	private String contactEmail;
+	private String contactNumber;
 	
 	
 	public String getType() {
@@ -81,6 +83,23 @@ public class Employer {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public void setContactEmail(String string) {
+		this.contactEmail = string;
+	}
+	
+	public String getContactemail(){
+		return this.contactEmail;
+	}
+	
+	
+	public void setContactnumber(String string) {
+		this.contactNumber = string;
+		
+	}
+	
+	public String getContactnumber(){
+		return this.contactNumber;
 	}
 	
 }

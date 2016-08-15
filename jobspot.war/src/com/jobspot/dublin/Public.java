@@ -1,4 +1,4 @@
-package com.jobspot.jobseeker;
+package com.jobspot.dublin;
 
 import java.io.IOException;
 
@@ -16,34 +16,31 @@ import com.eooz.common.util.ResponseWrap;
 import com.jobspot.common.CommandInvoker;
 
 /**
- * Servlet implementation class Jobseeker
+ * Servlet implementation class Public
  */
-@WebServlet("/do.jobseeker")
-public class Jobseeker extends HttpServlet {
-	
+@WebServlet("/do.public")
+public class Public extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-    
-      /**
+	private Logger logger = LoggerFactory.getLogger(this.getClass());  
+    /**
      * @see HttpServlet#HttpServlet()
      */
-    public Jobseeker() {
+    public Public() {
         super();
         // TODO Auto-generated constructor stub
     }
-    
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+		this.doPost(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
 		try{
 			
 			new CommandInvoker(new RequestWrap(request), new ResponseWrap(response))

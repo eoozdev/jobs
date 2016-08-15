@@ -14,6 +14,7 @@ public class Page implements IPage {
 	
 	private Map<String, Collection<Object>> collectionOne;
 	private Map<String, Collection<Object>> collectionTwo;
+	private Object instance;
 	
 	@Override
 	public Form getForm() {
@@ -76,6 +77,12 @@ public class Page implements IPage {
 	public void allowDirectaccess(boolean value) {
 		allowDirectAccess = value;
 	}
+
+	@Override
+	public void setInstance(Object v) {
+		this. instance = v;
+	}
+
 
 
 	
