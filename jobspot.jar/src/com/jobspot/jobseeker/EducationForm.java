@@ -5,9 +5,18 @@ import java.util.Map;
 import com.eooz.common.form.Form;
 import com.jobspot.common.FIELD_NAME;
 import com.jobspot.dto.Education;
+import com.eooz.common.util.ValidationUtil;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.io.*;
+
+
+
 
 public class EducationForm implements Form {
-
+	private boolean validPeriod = false;
+	private boolean validQualification = false;
 	private Education education;
 	private boolean validated;
 	
@@ -30,9 +39,64 @@ public class EducationForm implements Form {
 		this.education = new Education();
 	}
 
+	private void validPeriod(boolean status) {
+		this.validPeriod = status;
+			
+		}
+		
+	public boolean validPeriod(){
+		return validPeriod;
+		}
+		
+	private void validQualification(boolean status) {
+		this.validQualification = status;
+			
+		}
+		
+	public boolean validQualification(){
+		return validQualification;
+		}
+
+	
+	
 	@Override
-	public void validate() {
+	public void validate(){
 		validated = true;
+		
+		String dateRange = this.education.getPeriod();
+		String[] datesRange = dateRange.split("_");
+		String datevalue1 = datesRange[0]; // yyyymmdd
+		String datevalue2 = datesRange[1]; // yyyymmdd
+		SimpleDateFormat  format = new SimpleDateFormat ("yyyymmdd");
+		try{
+		Date date1 = format.parse(datevalue1);
+		Date date2 = format.parse(datevalue2);
+		if(ValidationUtil.isValidDateRange(date1, date2) && (ValidationUtil.length(">", 1))){
+			validPeriod(true);
+			
+		}else{
+			validated = false;
+			validPeriod(false);
+		}
+		}
+		 catch(Exception ex){
+			  //exception
+			  ex.printStackTrace();
+			}
+		
+	
+	
+		if(ValidationUtil.exists(this.education.getQualification()) && ValidationUtil.length(">", 6)){
+			validQualification(true);
+			
+		}
+		
+		else{
+			validated = false;
+			validQualification(false);
+		}	
+			
+		
 	}
 
 	@Override

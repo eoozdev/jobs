@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Date;
+import java.util.Calendar;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +20,17 @@ import com.eooz.common.util.RequestWrap;
 import com.eooz.common.util.ResponseWrap;
 import com.eooz.common.util.SQLConnection;
 import com.eooz.common.util.SYSTEM_MESAGE;
+import com.eooz.common.util.ValidationUtil;
 import com.eooz.security.SecurityUtil;
 import com.jobspot.dto.Education;
 import com.jobspot.jobseeker.jdbc.operations.AddJobseekerToSession;
 
+
 public class CmdAddEducation extends AbstractCommand implements PostCommand {
 
+	private boolean validated;
+
+	
 	private ResponseWrap response;
 	private RequestWrap request;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -54,6 +62,8 @@ public class CmdAddEducation extends AbstractCommand implements PostCommand {
 			
 			Map<String, String> params = request.getParameterMap();
 			EducationForm form = new EducationForm(params);
+			form.validate();
+			
 			
 			if(form.validated()){
 				create(form.getEducation(), SecurityUtil.getUsername(), jobseekerCode);
@@ -89,7 +99,7 @@ public class CmdAddEducation extends AbstractCommand implements PostCommand {
 			ps.setString(2, e.getQualification());
 			ps.setString(3, e.getQualificationCode());
 			ps.setString(4, jobseeker);
-			ps.setString(4, jobseekerCode);
+			ps.setString(5, jobseekerCode);
 			
 			ps.executeUpdate();
 			
@@ -119,5 +129,15 @@ public class CmdAddEducation extends AbstractCommand implements PostCommand {
 		return new CmdAddEducation(request, response);
 	}
 
+	
+	
+	
+	
+
+		
+	
+
+
+	
 }
 
