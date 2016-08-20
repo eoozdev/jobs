@@ -59,6 +59,7 @@ public class CmdAddWorkExperience extends AbstractCommand implements PostCommand
 			
 			Map<String, String> params = request.getParameterMap();
 			WorkExperienceForm form = new WorkExperienceForm(params);
+			form.validate();
 			
 			if(form.validated()){
 				create(form.getWorkExperience(), SecurityUtil.getUsername(), jobseekerCode);

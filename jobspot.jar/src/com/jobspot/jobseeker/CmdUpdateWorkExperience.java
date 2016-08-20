@@ -64,7 +64,7 @@ public class CmdUpdateWorkExperience extends AbstractCommand implements PutComma
 			
 			Map<String, String> params = request.getParameterMap();
 			WorkExperienceForm form = new WorkExperienceForm(params);
-			
+			form.validate();
 			if(form.validated()){
 				update(form.getWorkExperience(), SecurityUtil.getUsername(), code);
 			}

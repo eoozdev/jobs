@@ -6,10 +6,8 @@ import com.eooz.common.form.Form;
 import com.jobspot.common.FIELD_NAME;
 import com.jobspot.dto.Education;
 import com.eooz.common.util.ValidationUtil;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.io.*;
 
 
 
@@ -68,23 +66,22 @@ public class EducationForm implements Form {
 		String datevalue1 = datesRange[0]; // yyyymmdd
 		String datevalue2 = datesRange[1]; // yyyymmdd
 		SimpleDateFormat  format = new SimpleDateFormat ("yyyymmdd");
-		try{
-		Date date1 = format.parse(datevalue1);
-		Date date2 = format.parse(datevalue2);
-		if(ValidationUtil.isValidDateRange(date1, date2) && (ValidationUtil.length(">", 1))){
-			validPeriod(true);
-			
-		}else{
-			validated = false;
-			validPeriod(false);
-		}
-		}
-		 catch(Exception ex){
-			  //exception
-			  ex.printStackTrace();
-			}
 		
-	
+		try {
+			
+			Date date1 = format.parse(datevalue1);
+			Date date2 = format.parse(datevalue2);
+			
+			if (ValidationUtil.isValidDateRange(date1, date2) && (ValidationUtil.exists(this.education.getPeriod()))) {
+				validPeriod(true);
+
+			} else {
+				validated = false;
+				validPeriod(false);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	
 		if(ValidationUtil.exists(this.education.getQualification()) && ValidationUtil.length(">", 6)){
 			validQualification(true);

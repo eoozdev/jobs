@@ -61,7 +61,7 @@ public class CmdUpdateJobseeker extends AbstractCommand implements PutCommand{
 			
 			Map<String, String> params = request.getParameterMap();
 			JobseekerProfile profile = new JobseekerProfile(params);
-			
+			profile.validate();
 			if(profile.validated){
 				updateJobseekerProfile(profile.getJobseeker(), SecurityUtil.getUsername());
 			}
