@@ -63,7 +63,7 @@ public class CmdUpdateEducation extends AbstractCommand implements PutCommand {
 			
 			Map<String, String> params = request.getParameterMap();
 			EducationForm form = new EducationForm(params);
-			
+
 			form.validate();
 			if(form.validated()){
 				update(form.getEducation(), SecurityUtil.getUsername(), code);

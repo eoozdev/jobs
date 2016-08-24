@@ -55,6 +55,7 @@ public class CmdAddLanguage  extends AbstractCommand implements PostCommand  {
 			
 			Map<String, String> params = request.getParameterMap();
 			LanguageForm form = new LanguageForm(params);
+			form.validate();
 			
 			if(form.validated()){
 				create(form.getLanguage(), SecurityUtil.getUsername(), jobseekerCode);

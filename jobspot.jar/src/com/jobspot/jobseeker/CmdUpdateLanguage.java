@@ -63,7 +63,7 @@ public class CmdUpdateLanguage extends AbstractCommand implements PutCommand {
 			
 			Map<String, String> params = request.getParameterMap();
 			LanguageForm form = new LanguageForm(params);
-			
+			form.validate();
 			if(form.validated()){
 				update(form.getLanguage(), SecurityUtil.getUsername(), code);
 			}
