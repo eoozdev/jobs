@@ -18,14 +18,20 @@ import com.jobspot.dto.Vacancy;
 
 public class SearchByKeywordTownAndJobCategory implements ISearch {
 
+	private int pgNo = 1;
+	private int pgSize = 10;
+	
 	private String town, field, keyword;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-	public SearchByKeywordTownAndJobCategory(String keyword, String town, String field) {	
+	public SearchByKeywordTownAndJobCategory(String keyword, String town, String field, int pageNo, int pgSize) {	
 		this.keyword = keyword;
-		this.field = keyword;
+		this.field = field;
 		this.town = town;
+		
+		this.pgNo = pageNo;
+		this.pgSize = pgSize;
 	}
 
 
@@ -35,7 +41,8 @@ public class SearchByKeywordTownAndJobCategory implements ISearch {
 		String sql = "SELECT V.CODE AS VCODE, V.TITLE, V.BASIC, E.CODE, E.NAME, T.CODE AS TCODE, T.NAME AS TNAME, JC.CODE AS JCODE, JC.NAME AS JNAME FROM VACANCY V INNER JOIN EMPLOYER E ON E.CODE = V.EMPLOYER "
 				+ " INNER JOIN VACANCY_LOCATION VL ON VL.VACANCY = V.CODE INNER JOIN TOWN T ON VL.TOWN = T.CODE "
 				+ " INNER JOIN VACANCY_JOBCATEGORY VJC ON VJC.VACANCY = V.CODE INNER JOIN JOBCATEGORY JC ON VJC.JOBCATEGORY = JC.CODE"
-				+ " WHERE T.CODE = ? AND JC.CODE = ? AND V.TITLE LIKE ? AND V.STARTDATE <= current_timestamp AND V.ENDDATE >= current_timestamp";
+				+ " WHERE T.CODE = ? AND JC.CODE = ? AND V.TITLE LIKE ? AND V.STARTDATE <= current_timestamp AND V.ENDDATE >= current_timestamp"
+				+ "	LIMIT "+(pgNo-1)*pgSize+", "+pgSize+"";
 		
 		ResultSet rs = null;
 		Connection con = null;
@@ -46,8 +53,10 @@ public class SearchByKeywordTownAndJobCategory implements ISearch {
 			
 			
 			con = SQLConnection.getConnection();
-			ps = con.prepareStatement(sql);
-			
+			ps = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			ps.setMaxRows(pgSize);
+			ps.setFetchSize(pgSize);
 			ps.setString(1, town);
 			ps.setString(2, field);
 			ps.setString(3, "%"+keyword+"%");

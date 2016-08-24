@@ -1,0 +1,109 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+}
+.wrapper {
+    background: url(../img/writing-1149962_1920.jpg) no-repeat;
+}
+.wrapper-inner {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    height: auto;
+    height: 100vh;
+}
+.logo-area {
+    display: inline-block;
+    width: 49%;
+}
+.logo-area h1 {
+    padding: 0;
+    margin: 0;
+    color: #fff;
+    letter-spacing: 8px;
+}
+.logo-area p {
+    color: #fff;
+    font-size: 10px;
+}
+@media screen and (min-width: 80em) {
+    .logo-area{
+        width: 49%;
+    }
+}
+.navigation-area {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+}
+@media screen and (min-width: 80em) {
+    .navigation-area {
+        width: 49%;
+        text-align: right;
+        position: relative;
+        top: 20px;
+    }
+}
+.navigation-area > ul > li {
+    display: inline-block;
+    color: #fff;
+}
+.navigation-area > ul > li > a {
+    color: #fff;
+}
+.tagline {
+    margin-top: 170px;
+    text-align: center;
+}
+.tagline h2 {
+    font-size: 40px;
+    color: #fff;
+}
+.login-modal {
+    width: 300px;
+    background: #fff;
+    position: absolute;
+    right: 0px;
+    padding: 10px;
+    top: 30px;
+    display: none;
+}
+.login-modal input {
+    width: 100%;
+    padding-left: 5px;
+    color: #343434;
+}
+.error-message span {
+    color: tomato;
+    display: inline-block;
+    padding: 10px;
+    text-align: left;
+}
+.email-error-message,
+.password-error-message {
+    color: tomato;
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+/**** Search engine ****/
+
+.search-engine-inner {
+    margin-top: 100px;
+    padding: 30px;
+}
+.search-engine-inner label {
+    width: 100%;
+    color: #fff;
+}
+.search-engine-inner select, .search-engine-inner input {
+    width: 100%;
+    border: none;
+    height: 40px;
+    padding: 0 10px;
+}
+.search-btn-wrapper > a {
+    display: block;
+    margin-top: 28px;
+}

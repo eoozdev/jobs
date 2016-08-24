@@ -10,7 +10,7 @@
 <body>
 
 	<!--login form-->
-	<form  method="post" action="">
+	<form  method="post" action="/do.login">
 		<input type = "text" name = "username"/>
 		<input type = "password" name = "password" />
 		<input type = "submit"/>

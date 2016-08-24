@@ -17,13 +17,18 @@ import com.jobspot.dto.Vacancy;
 
 public class SearchByKeywordAndJobcategory implements ISearch {
 
+	private int pgNo = 1;
+	private int pgSize = 10;
 
 	private String field, keyword;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	public SearchByKeywordAndJobcategory(String keyword, String field) {
+	public SearchByKeywordAndJobcategory(String keyword, String field, int pageNo, int pgSize) {
 		this.keyword = keyword;
 		this.field = field;
+
+		this.pgNo = pageNo;
+		this.pgSize = pgSize;
 	}
 
 
@@ -33,7 +38,8 @@ public class SearchByKeywordAndJobcategory implements ISearch {
 		
 		String sql = "SELECT V.CODE AS VCODE, V.TITLE, V.BASIC, E.CODE, E.NAME, JC.CODE AS JCODE, JC.NAME AS JCNAME FROM VACANCY V INNER JOIN EMPLOYER E ON E.CODE = V.EMPLOYER "
 				+ " INNER JOIN VACANCY_JOBCATEGORY VJC ON VJC.VACANCY = V.CODE INNER JOIN JOBCATEGORY JC ON VJC.JOBCATEGORY = JC.CODE "
-				+ " WHERE JC.CODE = ? AND V.TITLE LIKE ? AND V.STARTDATE <= current_timestamp AND V.ENDDATE >= current_timestamp";
+				+ " WHERE JC.CODE = ? AND V.TITLE LIKE ? AND V.STARTDATE <= current_timestamp AND V.ENDDATE >= current_timestamp"
+				+ "	LIMIT "+(pgNo-1)*pgSize+", "+pgSize+"";
 		
 		ResultSet rs = null;
 		Connection con = null;
@@ -44,8 +50,10 @@ public class SearchByKeywordAndJobcategory implements ISearch {
 			
 			
 			con = SQLConnection.getConnection();
-			ps = con.prepareStatement(sql);
-			
+			ps = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			ps.setMaxRows(pgSize);
+			ps.setFetchSize(pgSize);
 			ps.setString(1, field);
 			ps.setString(2, "%"+keyword+"%");
 			rs = ps.executeQuery();

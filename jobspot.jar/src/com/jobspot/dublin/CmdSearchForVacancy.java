@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
 import com.eooz.common.command.AbstractCommand;
 import com.eooz.common.command.GetCommand;
 import com.eooz.common.command.ICommand;
-import com.eooz.common.page.IPage;
-import com.eooz.common.page.Page;
 import com.eooz.common.util.RequestWrap;
 import com.eooz.common.util.ResponseWrap;
+import com.eooz.common.util.SYSTEM_MESAGE;
+import com.google.gson.Gson;
 import com.jobspot.search.ISearch;
 import com.jobspot.search.SearchByJobcategory;
 import com.jobspot.search.SearchByKeyword;
@@ -40,55 +40,67 @@ public class CmdSearchForVacancy extends AbstractCommand implements GetCommand{
 	@Override
 	public String doWork() {
 		
-		IPage page = new Page();
+		String response = SYSTEM_MESAGE.UNEXPECTED_ERROR.value();
 		
-		try{			
+		try{
 			
+			Gson gson = new Gson();
 			ISearch search = getQuery();
 			Collection<Object> list = search.getCollection();
-			page.setCollectionOne("SEARCH_RESULT", list, new HashMap<>());			
-			
+			response = gson.toJson(list);
 		}
 		
 		catch(Exception e){
-			logger.error("--> doWork(): GENERAL ERROR: "+e);
+			logger.error("--> doWork(): e: "+e);
 		}
 		
-		return toJson(page);
+		
+		return response;
 	}
 
-	private ISearch getQuery() {
+	private ISearch getQuery(){
 		
 		String town = request.getParameter("town");
 		String field = request.getParameter("field");
 		String keyword = request.getParameter("keyword");
 		
+		int pageSize = 10;
+		int pageNo = 1;
+		
+		try{
+			pageNo = Integer.parseInt(request.getParameter("pgNo"));
+		}
+		
+		catch(NumberFormatException nfe){
+			pageNo = 1;
+		}
+		
 		if(field == null && town == null){
-			return new SearchByKeyword(keyword);
+			return new SearchByKeyword(keyword, pageNo, pageSize);
 		}
 		
 		else if(field == null && keyword == null){
-			return new SearchByTown(town);
+			return new SearchByTown(town, pageNo, pageSize);
 		}
 		
 		else if(town == null && keyword == null){
-			return new SearchByJobcategory(field);
+			return new SearchByJobcategory(field, pageNo, pageSize);
 		}
 		
 		else if(town == null){
-			return new SearchByKeywordAndJobcategory(keyword, field);
+			return new SearchByKeywordAndJobcategory(keyword, field, pageNo, pageSize);
 		}
 		
 		else if (field == null){
-			return new SearchByTownAndKeyword(town, keyword);
+			return new SearchByTownAndKeyword(town, keyword, pageNo, pageSize);
 		}
 		
 		else if (keyword == null){
-			return new SearchByTownAndField(town, field);
+			return new SearchByTownAndField(town, field, pageNo, pageSize);
 		}
 		
 		else {
-			return new SearchByKeywordTownAndJobCategory(keyword, town, field);
+			return new SearchByKeywordTownAndJobCategory(keyword, town, field, pageNo, pageSize);
 		}
 		
 	}

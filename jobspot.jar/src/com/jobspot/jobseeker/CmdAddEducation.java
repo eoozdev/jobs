@@ -55,6 +55,7 @@ public class CmdAddEducation extends AbstractCommand implements PostCommand {
 			Map<String, String> params = request.getParameterMap();
 			EducationForm form = new EducationForm(params);
 			
+			form.validate();
 			if(form.validated()){
 				create(form.getEducation(), SecurityUtil.getUsername(), jobseekerCode);
 			}

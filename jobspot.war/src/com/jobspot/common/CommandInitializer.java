@@ -4,6 +4,8 @@ import com.eooz.common.command.GetCommandFactory;
 import com.eooz.common.command.PostCommandFactory;
 import com.eooz.common.command.PutCommandFactory;
 import com.jobspot.dublin.CmdApplyToVacancy;
+import com.jobspot.dublin.CmdGetJobCategories;
+import com.jobspot.dublin.CmdGetTowns;
 import com.jobspot.dublin.CmdSearchForVacancy;
 import com.jobspot.dublin.CmdShowSearchEngine;
 import com.jobspot.dublin.CmdViewVacancy;
@@ -76,7 +78,9 @@ public class CommandInitializer {
 
 		GetCommandFactory.register(Command.APPLY_TO_VACANCY.code(), new CmdApplyToVacancy());
 
-		GetCommandFactory.register(Command.SHOW_SEARCH_ENGINE.code(), new CmdShowSearchEngine());
+		GetCommandFactory.register(Command.GET_TOWNS.code(), new CmdGetTowns());
+		
+		GetCommandFactory.register(Command.GET_JOBCATEGORIES.code(), new CmdGetJobCategories());
 
 	}
 

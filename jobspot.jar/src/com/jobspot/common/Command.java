@@ -10,7 +10,8 @@ public enum Command {
 	SEARCH_FOR_VACANCY("EZPS",CommandType.GET),
 	VIEW_VACANCY("EZVV", CommandType.GET), 
 	APPLY_TO_VACANCY("EZATV", CommandType.PUT),
-	SHOW_SEARCH_ENGINE("EZSSE", CommandType.GET),
+	GET_TOWNS("EZGT", CommandType.GET),
+	GET_JOBCATEGORIES("EZGJC", CommandType.GET),
 	
 	//access
 	REGISTER_USER("EZRU", CommandType.POST),
